@@ -2,301 +2,199 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>OpsLink Hosting – Next-Gen Game Hosting Powered by Pterodactyl</title>
+  <title>OpsLink Hosting – Fast, Reliable Game Servers</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="OpsLink Hosting offers powerful, affordable FiveM and ERLC server hosting. Backed by Google Cloud and integrated with the OpsLink Systems ecosystem.">
-  <meta name="theme-color" content="#2563eb" />
-  <link rel="icon" type="image/png" href="assets/favicon.png" />
-
+  <meta name="description" content="Power your FiveM and roleplay communities with OpsLink Hosting — lightning-fast servers, Pterodactyl panel access, and instant setup.">
+  <link rel="icon" href="assets/favicon.png" />
   <style>
-    /* ================================
-       GLOBAL THEME (2025 REFRESH)
-    ================================= */
     :root {
-      --bg-main: #050813;
-      --bg-nav: rgba(4, 7, 16, 0.9);
-      --bg-card: rgba(13, 18, 34, 0.95);
-      --bg-pill: rgba(15, 23, 42, 0.9);
+      --bg: #060b12;
+      --card: #0b111b;
       --accent: #4e8cff;
-      --accent-soft: #6ea0ff;
-      --accent-strong: #2563eb;
-      --text-main: #e5e7eb;
+      --accent2: #2563eb;
+      --text: #e5e7eb;
       --text-soft: #9ca3af;
-      --border-subtle: rgba(148, 163, 184, 0.25);
-      --border-strong: rgba(148, 163, 184, 0.5);
-      --danger: #f97373;
     }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Segoe UI',sans-serif;background:var(--bg);color:var(--text);}
+    a{text-decoration:none;color:inherit;}
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      background: radial-gradient(circle at top, #111827 0, #020617 50%, #020617 100%);
-      color: var(--text-main);
-      font-family: "Segoe UI", system-ui, sans-serif;
-      min-height: 100vh;
-    }
-    a { color: inherit; text-decoration: none; }
+    /* NAVBAR */
+    header{position:sticky;top:0;background:rgba(0,0,0,0.35);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.05);}
+    nav{max-width:1200px;margin:auto;display:flex;justify-content:space-between;align-items:center;padding:16px 20px;}
+    .logo{font-size:1.3rem;font-weight:700;}
+    .logo span{color:var(--accent);}
+    .nav-links a{margin-left:24px;font-size:.9rem;color:var(--text-soft);}
+    .nav-links a:hover{color:var(--accent);}
+    .btn{padding:8px 18px;border-radius:999px;font-size:.9rem;font-weight:500;cursor:pointer;transition:.2s;}
+    .btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;}
+    .btn-primary:hover{box-shadow:0 0 16px rgba(78,140,255,.6);transform:translateY(-1px);}
+    .btn-outline{border:1px solid rgba(255,255,255,0.25);color:var(--text-soft);background:transparent;}
+    .btn-outline:hover{border-color:var(--accent);color:#fff;}
 
-    /* ================================
-       NAVBAR
-    ================================= */
-    .navbar {
-      position: sticky; top: 0; z-index: 40;
-      background: var(--bg-nav); backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(148, 163, 184, 0.2);
-    }
-    .nav-inner {
-      max-width: 1200px; margin: 0 auto; padding: 14px 20px;
-      display: flex; align-items: center; justify-content: space-between; gap: 20px;
-    }
-    .logo { font-weight: 700; font-size: 1.2rem; letter-spacing: 0.08em; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
-    .logo span { color: var(--accent); }
-    .logo-pill {
-      font-size: 0.7rem; padding: 3px 9px; border-radius: 999px;
-      background: rgba(37, 99, 235, 0.18);
-      border: 1px solid rgba(96, 165, 250, 0.5); color: var(--accent-soft);
-    }
-    .nav-links { display: flex; align-items: center; gap: 18px; font-size: 0.9rem; }
-    .nav-links a {
-      color: var(--text-soft);
-      padding: 6px 2px;
-      border-bottom: 2px solid transparent;
-      transition: color 0.15s, border-color 0.15s;
-    }
-    .nav-links a:hover { color: #f9fafb; border-bottom-color: var(--accent); }
+    /* HERO */
+    .hero{max-width:1200px;margin:auto;display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:center;padding:80px 20px;}
+    .hero h1{font-size:2.8rem;font-weight:800;line-height:1.1;}
+    .hero h1 span{color:var(--accent);}
+    .hero p{margin-top:14px;color:var(--text-soft);max-width:480px;line-height:1.6;}
+    .hero-actions{margin-top:24px;display:flex;gap:12px;flex-wrap:wrap;}
+    .hero-img{width:100%;border-radius:16px;box-shadow:0 0 30px rgba(0,0,0,0.5);}
 
-    .btn {
-      border-radius: 999px; padding: 7px 16px; border: 1px solid transparent;
-      font-size: 0.85rem; font-weight: 500; cursor: pointer;
-      transition: 0.15s ease;
-    }
-    .btn-outline {
-      background: transparent; border-color: rgba(148, 163, 184, 0.4); color: var(--text-soft);
-    }
-    .btn-outline:hover { border-color: var(--accent-soft); color: #f9fafb; transform: translateY(-1px); }
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
-      color: white; box-shadow: 0 0 18px rgba(59, 130, 246, 0.5);
-    }
-    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 0 22px rgba(59, 130, 246, 0.75); }
+    /* FEATURES */
+    section{padding:60px 20px;max-width:1200px;margin:auto;}
+    h2.section-title{font-size:1.8rem;margin-bottom:8px;}
+    p.section-sub{color:var(--text-soft);margin-bottom:30px;}
+    .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;}
+    .feature{background:var(--card);border-radius:14px;padding:20px;border:1px solid rgba(255,255,255,0.05);}
+    .feature h3{color:var(--accent);margin-bottom:8px;font-size:1.05rem;}
 
-    /* ================================
-       HERO SECTION
-    ================================= */
-    .page-wrap { max-width: 1200px; margin: 0 auto; padding: 40px 20px 60px; }
-    .hero {
-      display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-      gap: 40px; align-items: center; margin-bottom: 60px;
-    }
-    .hero-title {
-      font-size: clamp(2.3rem, 3vw + 1rem, 3.3rem);
-      font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 14px;
-    }
-    .hero-title span {
-      background: linear-gradient(120deg, #60a5fa, #a855f7, #f97316);
-      -webkit-background-clip: text; color: transparent;
-    }
-    .hero-subtitle { font-size: 1rem; color: var(--text-soft); max-width: 480px; margin-bottom: 20px; }
-    .hero-badges { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 22px; }
-    .badge {
-      font-size: 0.75rem; padding: 5px 11px; border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      background: rgba(15, 23, 42, 0.75); color: var(--text-soft);
-      display: inline-flex; align-items: center; gap: 6px;
-    }
-    .badge-dot { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 10px rgba(34, 197, 94, 0.9); }
-    .hero-panel {
-      border-radius: 22px; background: var(--bg-card);
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      padding: 18px; box-shadow: 0 26px 70px rgba(15, 23, 42, 0.8);
-    }
+    /* PRICING */
+    .pricing{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;}
+    .plan{background:var(--card);border:1px solid rgba(255,255,255,0.05);border-radius:16px;padding:24px;display:flex;flex-direction:column;align-items:center;text-align:center;}
+    .plan.highlight{border-color:var(--accent);box-shadow:0 0 25px rgba(78,140,255,0.4);}
+    .plan h3{margin-bottom:8px;font-size:1.2rem;}
+    .plan .price{font-size:2rem;font-weight:700;margin-bottom:8px;}
+    .plan .price span{font-size:.9rem;color:var(--text-soft);}
+    .plan ul{list-style:none;margin:16px 0;color:var(--text-soft);font-size:.9rem;}
+    .plan ul li{margin:6px 0;}
+    .plan button{margin-top:auto;width:100%;}
 
-    /* ================================
-       SECTION TITLES
-    ================================= */
-    .section-title { font-size: 1.3rem; font-weight: 600; margin-bottom: 8px; }
-    .section-subtitle { font-size: 0.9rem; color: var(--text-soft); margin-bottom: 18px; }
+    /* PANEL SECTION */
+    .panel{display:grid;grid-template-columns:1.1fr 1fr;gap:24px;align-items:center;}
+    .panel img{width:100%;border-radius:12px;}
+    .panel p{color:var(--text-soft);margin-top:10px;line-height:1.6;}
 
-    /* ================================
-       PANEL / INFRASTRUCTURE
-    ================================= */
-    .panel-box {
-      border-radius: 18px; padding: 16px; border: 1px solid rgba(148, 163, 184, 0.5);
-      background: radial-gradient(circle at left, rgba(37,99,235,0.25), transparent 55%), rgba(15,23,42,0.9);
-      display: grid; grid-template-columns: 1.4fr 1fr; gap: 16px; font-size: 0.85rem;
-    }
-    .panel-list { list-style: none; display: flex; flex-direction: column; gap: 4px; color: var(--text-soft); }
-    .panel-list li::before { content: "› "; color: var(--accent-soft); }
-    .panel-metrics {
-      background: rgba(15,23,42,0.95);
-      border-radius: 16px; border: 1px solid rgba(30,64,175,0.9);
-      padding: 10px 12px; font-size: 0.8rem;
-    }
-    .panel-metrics-row { display: flex; justify-content: space-between; margin-bottom: 4px; }
-    .pill-ok {
-      padding: 2px 7px; border-radius: 999px; font-size: 0.7rem;
-      background: rgba(22,163,74,0.15); color: #4ade80; border: 1px solid rgba(74,222,128,0.5);
-    }
+    /* FOOTER */
+    footer{border-top:1px solid rgba(255,255,255,0.05);text-align:center;padding:20px;color:var(--text-soft);font-size:.85rem;}
 
-    /* ================================
-       FOOTER
-    ================================= */
-    footer {
-      border-top: 1px solid rgba(15,23,42,0.9);
-      padding-top: 18px; margin-top: 12px;
-      font-size: 0.8rem; color: var(--text-soft);
-      display: flex; flex-wrap: wrap; gap: 10px;
-      justify-content: space-between; align-items: center;
-    }
-    .footer-links { display: flex; flex-wrap: wrap; gap: 10px; }
-    .footer-links a:hover { color: var(--accent-soft); }
-
-    @media (max-width: 900px) {
-      .hero { grid-template-columns: 1fr; }
-      .panel-box { grid-template-columns: 1fr; }
-    }
+    @media(max-width:900px){.hero{grid-template-columns:1fr;text-align:center;}.panel{grid-template-columns:1fr;}.hero-actions{justify-content:center;}}
   </style>
 </head>
 <body>
-  <header class="navbar">
-    <div class="nav-inner">
-      <div class="logo">OpsLink<span>Hosting</span> <span class="logo-pill">Powered by Pterodactyl</span></div>
-      <nav class="nav-links">
+  <!-- NAV -->
+  <header>
+    <nav>
+      <div class="logo">OpsLink<span>Hosting</span></div>
+      <div class="nav-links">
         <a href="#features">Features</a>
         <a href="#pricing">Pricing</a>
         <a href="#panel">Panel</a>
-        <a href="#infrastructure">Infrastructure</a>
         <a href="#support">Support</a>
-      </nav>
-      <div class="nav-cta">
-        <a href="#panel" class="btn btn-outline">Client Area</a>
-        <a href="#pricing" class="btn btn-primary">Order Server</a>
       </div>
-    </div>
+      <div>
+        <a href="#pricing" class="btn btn-primary">Order Now</a>
+      </div>
+    </nav>
   </header>
 
-  <main class="page-wrap">
-    <!-- HERO -->
-    <section class="hero">
+  <!-- HERO -->
+  <section class="hero">
+    <div>
+      <h1>High-Performance <span>Game Servers</span> Built for Roleplay</h1>
+      <p>Launch your FiveM or ERLC server with zero setup. OpsLink Hosting gives you instant deployment, fast speeds, and reliable uptime — all powered by Google Cloud.</p>
+      <div class="hero-actions">
+        <a href="#pricing" class="btn btn-primary">Start Hosting</a>
+        <a href="#panel" class="btn btn-outline">View Panel</a>
+      </div>
+    </div>
+    <img src="assets/panel-preview.png" alt="Pterodactyl Panel Preview" class="hero-img">
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features">
+    <h2 class="section-title">Everything You Need to Host Right</h2>
+    <p class="section-sub">Fast. Secure. Built for your community.</p>
+    <div class="features">
+      <div class="feature"><h3>Instant Setup</h3><p>Deploy your server automatically after payment — no waiting or manual installs.</p></div>
+      <div class="feature"><h3>Reliable Uptime</h3><p>Powered by Google Cloud with 99.9% uptime and automatic daily backups.</p></div>
+      <div class="feature"><h3>DDoS Protection</h3><p>Stay online with enterprise-grade protection for FiveM and other game frameworks.</p></div>
+      <div class="feature"><h3>Easy Management</h3><p>Access your console, files, and backups through our clean OpsLink-branded Pterodactyl panel.</p></div>
+      <div class="feature"><h3>Affordable Pricing</h3><p>Simple monthly plans that scale with your player count — cancel anytime.</p></div>
+      <div class="feature"><h3>24/7 Support</h3><p>Real staff who understand roleplay communities, scripts, and frameworks.</p></div>
+    </div>
+  </section>
+
+  <!-- PRICING (REALISTIC TO YOUR VM) -->
+  <section id="pricing">
+    <h2 class="section-title">Choose Your Plan</h2>
+    <p class="section-sub">Instant setup. No contracts. Scale anytime.</p>
+    <div class="pricing">
+      <!-- PLAN 1 -->
+      <div class="plan">
+        <h3>Starter RP</h3>
+        <div class="price">$6<span>/month</span></div>
+        <ul>
+          <li>2 vCPUs</li>
+          <li>4 GB RAM</li>
+          <li>25 GB SSD Storage</li>
+          <li>Up to 64 Players</li>
+          <li>1 MySQL Database</li>
+        </ul>
+        <button class="btn btn-primary">Order Starter</button>
+      </div>
+
+      <!-- PLAN 2 -->
+      <div class="plan highlight">
+        <h3>Community Plus</h3>
+        <div class="price">$12<span>/month</span></div>
+        <ul>
+          <li>3 vCPUs</li>
+          <li>8 GB RAM</li>
+          <li>35 GB SSD Storage</li>
+          <li>Up to 128 Players</li>
+          <li>Priority Support</li>
+        </ul>
+        <button class="btn btn-primary">Order Community</button>
+      </div>
+
+      <!-- PLAN 3 -->
+      <div class="plan">
+        <h3>Network Elite</h3>
+        <div class="price">$18<span>/month</span></div>
+        <ul>
+          <li>4 vCPUs</li>
+          <li>12 GB RAM</li>
+          <li>45 GB SSD Storage</li>
+          <li>Up to 200 Players</li>
+          <li>Free Migration Assistance</li>
+        </ul>
+        <button class="btn btn-primary">Order Elite</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- PANEL -->
+  <section id="panel">
+    <h2 class="section-title">Manage Everything with Ease</h2>
+    <div class="panel">
       <div>
-        <div class="hero-badges">
-          <div class="badge"><span class="badge-dot"></span> Always-On Nodes</div>
-          <div class="badge">Google Cloud Infrastructure</div>
+        <p>Our Pterodactyl-powered control panel gives you full control over your servers. Restart, configure, and monitor performance in real time — all from your dashboard.</p>
+        <p>Once you order, your panel account is automatically created and your server deploys within minutes.</p>
+        <div class="hero-actions" style="margin-top:20px;">
+          <a href="#" class="btn btn-primary">Go to Panel</a>
         </div>
-        <h1 class="hero-title">Next-Gen Hosting for <span>Roleplay Communities</span></h1>
-        <p class="hero-subtitle">
-          OpsLink Hosting delivers modern, powerful, and instantly deployed FiveM & ERLC servers backed by the OpsLink Systems ecosystem.
-        </p>
-        <div class="hero-actions">
-          <a href="#pricing" class="btn btn-primary">Start a Server</a>
-          <a href="#panel" class="btn btn-outline">Preview Control Panel</a>
-        </div>
-        <p class="hero-footnote">Fully automated setup • Daily backups • Google Cloud secured</p>
       </div>
-      <aside class="hero-panel">
-        <div class="hero-panel-row"><strong>Status:</strong> <span class="pill-ok">Online</span></div>
-        <div class="hero-panel-row"><strong>Node:</strong> OPSLINK-US-CENTRAL1-C</div>
-        <div class="hero-panel-row"><strong>Uptime:</strong> 99.9%</div>
-        <div class="hero-panel-row"><strong>VM:</strong> e2-standard-4 • 4 vCPU • 16 GB RAM</div>
-        <div class="hero-panel-row"><strong>Disk:</strong> 50 GB Persistent</div>
-      </aside>
-    </section>
+      <img src="assets/dashboard-preview.png" alt="OpsLink Panel Interface">
+    </div>
+  </section>
 
-    <!-- FEATURES -->
-    <section id="features">
-      <h2 class="section-title">Why Choose OpsLink Hosting?</h2>
-      <p class="section-subtitle">Designed for communities that demand reliability and performance.</p>
-      <div class="feature-grid">
-        <article class="feature-card"><span class="feature-tag">Hardware</span><h3>Google Cloud Performance</h3><p>4 vCPU, 16 GB RAM compute instances with NVMe-backed storage ensure maximum performance.</p></article>
-        <article class="feature-card"><span class="feature-tag">Control</span><h3>Pterodactyl Panel</h3><p>Full access to console, SFTP, backups, and more — styled in the OpsLink design language.</p></article>
-        <article class="feature-card"><span class="feature-tag">Automation</span><h3>Instant Provisioning</h3><p>Pay, deploy, and receive your credentials in minutes. Fully integrated API automation.</p></article>
-        <article class="feature-card"><span class="feature-tag">Security</span><h3>DDoS-Protected Network</h3><p>Enterprise-grade mitigation ensures your community stays online 24/7.</p></article>
-        <article class="feature-card"><span class="feature-tag">Backups</span><h3>Daily Snapshots</h3><p>Google Cloud persistent disk backups between 9–10 PM daily.</p></article>
-        <article class="feature-card"><span class="feature-tag">Support</span><h3>OpsLink Experts</h3><p>Staff that know RP frameworks, vMenu, and CAD integration — real help, not templates.</p></article>
-      </div>
-    </section>
+  <!-- SUPPORT -->
+  <section id="support">
+    <h2 class="section-title">Need Help or Migration?</h2>
+    <p class="section-sub">Our team will migrate your existing server or set up a new one for you — free with any plan.</p>
+    <div class="hero-actions">
+      <a href="mailto:support@opslinksystems.com" class="btn btn-primary">Contact Support</a>
+      <a href="#pricing" class="btn btn-outline">View Plans</a>
+    </div>
+  </section>
 
-    <!-- PRICING -->
-    <section id="pricing" class="pricing-section">
-      <h2 class="section-title">Affordable Plans for Every Server Size</h2>
-      <p class="section-subtitle">All plans include Pterodactyl access, SFTP, and automatic deployment.</p>
-      <div class="pricing-grid">
-        <article class="pricing-card"><div class="plan-name">Starter City</div><div class="plan-price">$8.00<span>/month</span></div><div class="plan-specs"><div><strong>3 vCores</strong></div><div><strong>6 GB RAM</strong></div><div><strong>40 GB</strong> Storage</div><div><strong>64</strong> Slots</div></div><ul class="plan-features"><li>1 MySQL DB</li><li>Daily Backups</li><li>Instant Setup</li></ul><button class="btn btn-primary" data-plan="starter">Order Starter</button></article>
-        <article class="pricing-card highlight"><span class="pricing-badge">Most Popular</span><div class="plan-name">Community Plus</div><div class="plan-price">$16.00<span>/month</span></div><div class="plan-specs"><div><strong>4 vCores</strong></div><div><strong>10 GB RAM</strong></div><div><strong>60 GB</strong> Storage</div><div><strong>128</strong> Slots</div></div><ul class="plan-features"><li>Priority Support</li><li>2 Databases</li><li>Scheduled Tasks</li></ul><button class="btn btn-primary" data-plan="community">Order Community</button></article>
-        <article class="pricing-card"><div class="plan-name">Network / Franchise</div><div class="plan-price">$32.00<span>/month</span></div><div class="plan-specs"><div><strong>6 vCores</strong></div><div><strong>16 GB RAM</strong></div><div><strong>100 GB</strong> Storage</div><div><strong>Up to 200 Slots</strong></div></div><ul class="plan-features"><li>Custom Scaling</li><li>Multiple Frameworks</li><li>Staging + Production</li></ul><button class="btn btn-primary" data-plan="network">Contact Sales</button></article>
-      </div>
-    </section>
-
-    <!-- PANEL / INFRASTRUCTURE -->
-    <section id="panel" class="panel-section">
-      <h2 class="section-title">Pterodactyl, Refined by OpsLink</h2>
-      <p class="section-subtitle">Fully integrated with your account — deployed, branded, and automated.</p>
-      <div class="panel-box">
-        <div>
-          <p>When an order is placed, OpsLink Hosting connects to our Pterodactyl API to:</p>
-          <ul class="panel-list">
-            <li>Create a panel user with your email</li>
-            <li>Assign server, allocation, and startup configuration</li>
-            <li>Apply your selected CPU/RAM/Disk plan</li>
-            <li>Send credentials by email or Discord</li>
-          </ul>
-          <span class="panel-tag">Last updated: <span id="lastUpdate"></span></span>
-        </div>
-        <aside class="panel-metrics">
-          <div class="panel-metrics-row"><strong>Deploy Queue</strong><span class="pill-ok">Healthy</span></div>
-          <div class="panel-metrics-row"><span>Average Deployment</span><span>~ 90 s</span></div>
-          <div class="panel-metrics-row"><span>Active Servers</span><span>47</span></div>
-        </aside>
-      </div>
-    </section>
-
-    <section id="infrastructure" class="panel-section">
-      <h2 class="section-title">OpsLink Cloud Infrastructure</h2>
-      <p class="section-subtitle">Our environment runs on Google Cloud Compute Engine for enterprise-grade reliability.</p>
-      <div class="panel-box">
-        <div>
-          <ul class="panel-list">
-            <li><strong>Machine:</strong> e2-standard-4 (4 vCPU, 16 GB RAM)</li>
-            <li><strong>CPU Platform:</strong> Intel Broadwell</li>
-            <li><strong>Storage:</strong> 50 GB Balanced Persistent Disk</li>
-            <li><strong>OS:</strong> Ubuntu Minimal 22.04 (Jammy)</li>
-            <li><strong>Region:</strong> us-central1-c (Iowa)</li>
-            <li><strong>Backups:</strong> Daily 9–10 PM</li>
-            <li><strong>Firewall:</strong> HTTP/HTTPS enabled, SFTP open for Wings</li>
-          </ul>
-          <span class="panel-tag">Infrastructure monitored via Google Cloud Console</span>
-        </div>
-        <aside class="panel-metrics">
-          <div class="panel-metrics-row"><strong>Node Status</strong><span class="pill-ok">Running</span></div>
-          <div class="panel-metrics-row"><span>CPU Load</span><span>~18%</span></div>
-          <div class="panel-metrics-row"><span>RAM Usage</span><span>6.2 / 16 GB</span></div>
-          <div class="panel-metrics-row"><span>Disk Usage</span><span>12 / 50 GB</span></div>
-        </aside>
-      </div>
-    </section>
-
-    <!-- SUPPORT -->
-    <section id="support">
-      <h2 class="section-title">Migrate or Launch Instantly</h2>
-      <p class="section-subtitle">We’ll migrate your existing setup, databases, and configs to OpsLink Hosting with minimal downtime.</p>
-    </section>
-
-    <footer>
-      <div>© <span id="year"></span> OpsLink Hosting • Part of <strong>OpsLink Systems</strong></div>
-      <div class="footer-links">
-        <a href="index.html">Home</a>
-        <a href="legal.html">Legal</a>
-        <a href="tos.html">Terms</a>
-        <a href="privacy.html">Privacy</a>
-        <a href="mailto:support@opslinksystems.com">Support</a>
-      </div>
-    </footer>
-  </main>
+  <!-- FOOTER -->
+  <footer>
+    © <span id="year"></span> OpsLink Hosting – Part of OpsLink Systems. All rights reserved.
+  </footer>
 
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
-    document.getElementById("lastUpdate").textContent = new Date().toLocaleDateString("en-US", {
-      month: "long", day: "numeric", year: "numeric"
-    });
   </script>
 </body>
 </html>
