@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>OpsLink Hosting</title>
 <style>
+/* =============================
+   GLOBAL THEME
+============================= */
 :root {
-  --bg-gradient: radial-gradient(circle at top, #0a0f1c, #03060e 85%);
+  --bg-gradient: radial-gradient(circle at top, #0b1120, #020617 85%);
+  --text: #e3e9f5;
   --accent: #4e8cff;
-  --text: #e0e6f0;
   --btn-bg: #2563eb;
   --btn-hover: #1d4ed8;
-  --btn-text: #ffffff;
+  --btn-text: #fff;
   --snow-color: rgba(255, 255, 255, 0.9);
 }
 
@@ -21,17 +24,22 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   background: var(--bg-gradient);
   color: var(--text);
   font-family: "Segoe UI", sans-serif;
   overflow: hidden;
-  animation: fadeIn 1.5s ease;
-}
-@keyframes fadeIn {
-  from {opacity: 0;}
-  to {opacity: 1;}
+  animation: fadeIn 1.5s ease-in-out;
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* =============================
+   CENTER CONTENT
+============================= */
 .container {
   text-align: center;
   z-index: 2;
@@ -46,8 +54,8 @@ body {
 
 .logo-glow {
   position: absolute;
-  width: 300px;
-  height: 300px;
+  width: 400px;
+  height: 400px;
   background: radial-gradient(circle, rgba(78,140,255,0.25) 0%, transparent 70%);
   top: 50%;
   left: 50%;
@@ -57,42 +65,38 @@ body {
 }
 
 .logo {
-  width: 320px;
+  width: 380px;
   max-width: 90vw;
   z-index: 2;
   position: relative;
+  transition: transform 0.3s ease;
 }
+.logo:hover {
+  transform: scale(1.03);
+}
+
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-6px); }
+  50% { transform: translateY(-8px); }
 }
 
-/* Santa Hat */
-.hat {
-  position: absolute;
-  top: -120px;
-  left: 68%;
-  transform: rotate(-15deg);
-  width: 200px;
-  z-index: 3;
-}
-
-/* Text styling */
+/* =============================
+   TEXT + BUTTON
+============================= */
 h1 {
   font-size: 28px;
-  margin: 20px 0 10px;
+  margin: 25px 0 10px;
   font-weight: 700;
 }
 
 p {
   font-size: 16px;
-  color: #a8b0c5;
+  color: #aab3c9;
   max-width: 520px;
   margin: 0 auto 40px;
   line-height: 1.6;
 }
 
-/* Button */
 button {
   background: var(--btn-bg);
   color: var(--btn-text);
@@ -101,7 +105,7 @@ button {
   padding: 15px 45px;
   border-radius: 12px;
   cursor: pointer;
-  box-shadow: 0 0 25px rgba(37, 99, 235, 0.3);
+  box-shadow: 0 0 25px rgba(37, 99, 235, 0.35);
   transition: all 0.3s ease;
   animation: glow 2.5s infinite ease-in-out;
 }
@@ -114,7 +118,9 @@ button:hover {
   50% { box-shadow: 0 0 35px rgba(78,140,255,0.6); }
 }
 
-/* Snow */
+/* =============================
+   SNOW EFFECT
+============================= */
 .snowflake {
   position: fixed;
   top: -10px;
@@ -150,16 +156,21 @@ function createSnowflakes() {
 createSnowflakes();
 </script>
 
+<!-- =============================
+     MAIN CONTENT
+============================= -->
 <div class="container">
   <div class="logo-wrapper">
     <div class="logo-glow"></div>
-    <img src="https://i.imgur.com/VURJsAs.png" alt="Santa Hat" class="hat">
-    <img src="https://i.imgur.com/XwLSGNs.png" alt="OpsLink Hosting Logo" class="logo">
+    <img src="https://i.imgur.com/OVaIQea.png" alt="OpsLink Hosting Logo" class="logo" />
   </div>
 
   <h1>Welcome to OpsLink Hosting</h1>
-  <p>Reliable, automated hosting built for communities, developers, and roleplay networks — optimized for performance and simplicity.</p>
-  <button onclick="window.location.href='https://shop.opslinkcad.com'">Continue to Shop</button>
+  <p>Reliable, automated hosting built for communities, developers, and roleplay networks — optimized for performance, speed, and uptime.</p>
+
+  <button onclick="window.location.href='https://shop.opslinkcad.com'">
+    Continue to Shop
+  </button>
 </div>
 
 </body>
