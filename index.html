@@ -1,1077 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>OpsLink Hosting – Game & FiveM Hosting Powered by Pterodactyl</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <style>
-    :root {
-      --bg-main: #050716;
-      --bg-card: rgba(9, 12, 28, 0.96);
-      --bg-nav: rgba(6, 10, 25, 0.95);
-
-      --accent: #4e8cff;
-      --accent-soft: #7aa5ff;
-      --accent-strong: #2563eb;
-
-      --text-main: #edf2ff;
-      --text-soft: #9ca3af;
-      --border-subtle: rgba(148, 163, 184, 0.35);
-      --border-strong: rgba(148, 163, 184, 0.65);
-
-      --danger: #fb7185;
-      --ok: #4ade80;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      min-height: 100vh;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: var(--text-main);
-      background:
-        radial-gradient(circle at top left, #111827 0, #020617 45%, #000 100%);
-      overflow-x: hidden;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    /* STARFIELD BACKGROUND */
-    .bg-stars {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: -2;
-      background: transparent;
-    }
-
-    .bg-stars::before,
-    .bg-stars::after {
-      content: "";
-      position: absolute;
-      inset: -50%;
-      background-image:
-        radial-gradient(2px 2px at 10% 20%, rgba(255, 255, 255, 0.8), transparent 60%),
-        radial-gradient(2px 2px at 80% 10%, rgba(255, 255, 255, 0.7), transparent 60%),
-        radial-gradient(1px 1px at 40% 60%, rgba(255, 255, 255, 0.6), transparent 60%),
-        radial-gradient(2px 2px at 70% 80%, rgba(255, 255, 255, 0.7), transparent 60%),
-        radial-gradient(1px 1px at 25% 75%, rgba(255, 255, 255, 0.6), transparent 60%);
-      opacity: 0.4;
-      animation: drift 90s linear infinite;
-    }
-
-    .bg-stars::after {
-      animation-duration: 140s;
-      opacity: 0.25;
-    }
-
-    @keyframes drift {
-      from { transform: translate3d(0, 0, 0); }
-      to   { transform: translate3d(-20%, -20%, 0); }
-    }
-
-    /* NAVBAR */
-    .navbar {
-      position: sticky;
-      top: 0;
-      z-index: 40;
-      background: var(--bg-nav);
-      backdrop-filter: blur(14px);
-      border-bottom: 1px solid rgba(148, 163, 184, 0.32);
-    }
-
-    .nav-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 12px 22px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 18px;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-weight: 800;
-      font-size: 1.2rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-    }
-
-    .logo span {
-      color: var(--accent);
-    }
-
-    .logo-pill {
-      font-size: 0.7rem;
-      padding: 3px 9px;
-      border-radius: 999px;
-      background: rgba(37, 99, 235, 0.2);
-      border: 1px solid rgba(96, 165, 250, 0.7);
-      color: var(--accent-soft);
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      font-size: 0.9rem;
-    }
-
-    .nav-links a {
-      color: var(--text-soft);
-      padding: 6px 2px;
-      border-bottom: 2px solid transparent;
-      transition: color 0.15s ease, border-color 0.15s ease;
-    }
-
-    .nav-links a:hover {
-      color: #f9fafb;
-      border-bottom-color: var(--accent);
-    }
-
-    .nav-cta {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .btn {
-      border-radius: 999px;
-      padding: 8px 18px;
-      border: 1px solid transparent;
-      font-size: 0.85rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background 0.15s ease, border-color 0.15s ease,
-                  transform 0.08s ease, box-shadow 0.15s ease, color 0.15s ease;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      white-space: nowrap;
-    }
-
-    .btn-outline {
-      background: transparent;
-      border-color: rgba(148, 163, 184, 0.45);
-      color: var(--text-soft);
-    }
-
-    .btn-outline:hover {
-      border-color: var(--accent-soft);
-      color: #f9fafb;
-      transform: translateY(-1px);
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
-      color: white;
-      box-shadow: 0 0 18px rgba(59, 130, 246, 0.55);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 0 22px rgba(59, 130, 246, 0.85);
-    }
-
-    .btn:active {
-      transform: translateY(0);
-      box-shadow: none;
-    }
-
-    .page-wrap {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 30px 22px 60px;
-    }
-
-    /* HERO */
-    .hero {
-      display: grid;
-      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-      gap: 40px;
-      align-items: center;
-      margin-top: 12px;
-      margin-bottom: 56px;
-    }
-
-    .hero-breadcrumb {
-      font-size: 0.78rem;
-      color: var(--text-soft);
-      margin-bottom: 10px;
-    }
-
-    .hero-badges {
-      display: inline-flex;
-      align-items: center;
-      padding: 6px 14px;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.5);
-      background: rgba(15, 23, 42, 0.9);
-      font-size: 0.75rem;
-      color: var(--accent-soft);
-      letter-spacing: 0.11em;
-      text-transform: uppercase;
-      gap: 8px;
-      margin-bottom: 18px;
-    }
-
-    .hero-badge-dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 999px;
-      background: #22c55e;
-      box-shadow: 0 0 10px rgba(34, 197, 94, 0.9);
-    }
-
-    .hero-title {
-      font-size: clamp(2.4rem, 3vw + 1rem, 3.2rem);
-      font-weight: 800;
-      letter-spacing: -0.035em;
-      line-height: 1.05;
-      margin-bottom: 16px;
-    }
-
-    .hero-title span {
-      background: linear-gradient(120deg, #60a5fa, #a855f7, #f97316);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    .hero-subtitle {
-      font-size: 0.96rem;
-      color: var(--text-soft);
-      max-width: 520px;
-      margin-bottom: 20px;
-    }
-
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-bottom: 10px;
-    }
-
-    .hero-footnote {
-      font-size: 0.8rem;
-      color: var(--text-soft);
-    }
-
-    .hero-footnote span {
-      color: var(--accent-soft);
-    }
-
-    /* HERO ILLUSTRATION CARD */
-    .hero-illustration {
-      position: relative;
-      border-radius: 26px;
-      padding: 18px;
-      background:
-        radial-gradient(circle at top left, rgba(56, 189, 248, 0.25), transparent 60%),
-        radial-gradient(circle at bottom right, rgba(129, 140, 248, 0.2), transparent 60%),
-        var(--bg-card);
-      border: 1px solid rgba(148, 163, 184, 0.45);
-      box-shadow: 0 30px 80px rgba(15, 23, 42, 0.9);
-      overflow: hidden;
-    }
-
-    .hero-illustration-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-      font-size: 0.82rem;
-      color: var(--text-soft);
-    }
-
-    .hero-illustration-header strong {
-      color: var(--accent-soft);
-    }
-
-    .window-dots {
-      display: flex;
-      gap: 6px;
-    }
-
-    .window-dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: rgba(15, 23, 42, 0.95);
-      border: 1px solid rgba(148, 163, 184, 0.7);
-    }
-
-    .hero-illustration-body {
-      display: grid;
-      grid-template-columns: 1.3fr 1fr;
-      gap: 12px;
-      font-size: 0.78rem;
-    }
-
-    .panel-mock {
-      background: rgba(15, 23, 42, 0.98);
-      border-radius: 16px;
-      border: 1px solid rgba(31, 41, 55, 0.9);
-      padding: 10px 11px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .panel-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.75rem;
-      color: var(--text-soft);
-    }
-
-    .panel-status-pill {
-      padding: 2px 8px;
-      border-radius: 999px;
-      background: rgba(22, 163, 74, 0.2);
-      border: 1px solid rgba(74, 222, 128, 0.6);
-      color: #bbf7d0;
-      font-size: 0.7rem;
-    }
-
-    .panel-graph {
-      margin-top: 6px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, rgba(37, 99, 235, 0.18), rgba(8, 47, 73, 0.7));
-      height: 80px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .panel-graph-line {
-      position: absolute;
-      inset: 35% -40%;
-      border-radius: 999px;
-      border-top: 2px solid rgba(96, 165, 250, 0.9);
-      box-shadow: 0 0 18px rgba(96, 165, 250, 0.75);
-      transform: rotate(-3deg);
-    }
-
-    .panel-meta-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 4px 8px;
-      margin-top: 8px;
-    }
-
-    .panel-meta-label {
-      color: var(--text-soft);
-    }
-
-    .panel-meta-value {
-      font-weight: 500;
-    }
-
-    .hero-side-card {
-      border-radius: 16px;
-      border: 1px dashed rgba(148, 163, 184, 0.6);
-      background: rgba(15, 23, 42, 0.9);
-      padding: 9px 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .hero-side-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .pill-ok {
-      padding: 2px 7px;
-      border-radius: 999px;
-      font-size: 0.7rem;
-      background: rgba(22, 163, 74, 0.15);
-      color: #4ade80;
-      border: 1px solid rgba(74, 222, 128, 0.5);
-    }
-
-    .pill-warn {
-      padding: 2px 7px;
-      border-radius: 999px;
-      font-size: 0.7rem;
-      background: rgba(234, 179, 8, 0.2);
-      color: #facc15;
-      border: 1px solid rgba(250, 204, 21, 0.5);
-    }
-
-    /* SECTIONS */
-    .section-title {
-      font-size: 1.2rem;
-      font-weight: 600;
-      margin-bottom: 6px;
-    }
-
-    .section-subtitle {
-      font-size: 0.9rem;
-      color: var(--text-soft);
-      margin-bottom: 18px;
-    }
-
-    /* FEATURES */
-    .feature-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
-      margin-bottom: 46px;
-    }
-
-    .feature-card {
-      background: rgba(10, 16, 35, 0.98);
-      border-radius: 18px;
-      padding: 14px 14px 12px;
-      border: 1px solid var(--border-subtle);
-      font-size: 0.85rem;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      min-height: 110px;
-      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.85);
-    }
-
-    .feature-card h3 {
-      font-size: 0.95rem;
-      font-weight: 600;
-    }
-
-    .feature-tag {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--accent-soft);
-    }
-
-    /* PRICING */
-    .pricing-section {
-      margin-bottom: 44px;
-    }
-
-    .pricing-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 20px;
-      align-items: stretch;
-    }
-
-    .pricing-card {
-      background: linear-gradient(145deg, rgba(15, 23, 42, 0.98), #020617);
-      border-radius: 20px;
-      padding: 18px 16px 16px;
-      border: 1px solid rgba(148, 163, 184, 0.45);
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 22px 60px rgba(15, 23, 42, 0.9);
-    }
-
-    .pricing-card.highlight {
-      border-color: var(--accent);
-      box-shadow: 0 28px 70px rgba(37, 99, 235, 0.65);
-      transform: translateY(-2px);
-    }
-
-    .pricing-badge {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      font-size: 0.7rem;
-      padding: 4px 9px;
-      border-radius: 999px;
-      background: rgba(37, 99, 235, 0.18);
-      border: 1px solid rgba(96, 165, 250, 0.7);
-      color: var(--accent-soft);
-    }
-
-    .plan-name {
-      font-size: 1.02rem;
-      font-weight: 600;
-    }
-
-    .plan-note {
-      font-size: 0.78rem;
-      color: var(--text-soft);
-    }
-
-    .plan-price {
-      font-size: 1.5rem;
-      font-weight: 700;
-    }
-
-    .plan-price span {
-      font-size: 0.8rem;
-      font-weight: 500;
-      color: var(--text-soft);
-    }
-
-    .plan-specs {
-      font-size: 0.85rem;
-      color: var(--text-soft);
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 4px 10px;
-    }
-
-    .plan-specs strong {
-      color: #e5e7eb;
-      font-weight: 600;
-    }
-
-    .plan-features {
-      list-style: none;
-      margin-top: 8px;
-      margin-bottom: 10px;
-      font-size: 0.8rem;
-      color: var(--text-soft);
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .plan-features li::before {
-      content: "• ";
-      color: var(--accent-soft);
-    }
-
-    .pricing-card .btn-primary {
-      width: 100%;
-      text-align: center;
-      margin-top: auto;
-    }
-
-    /* PANEL SECTION */
-    .panel-section {
-      margin-bottom: 40px;
-    }
-
-    .panel-box {
-      border-radius: 18px;
-      padding: 16px 16px 14px;
-      border: 1px solid rgba(148, 163, 184, 0.5);
-      background:
-        radial-gradient(circle at left, rgba(37, 99, 235, 0.3), transparent 55%),
-        rgba(15, 23, 42, 0.96);
-      display: grid;
-      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-      gap: 18px;
-      font-size: 0.85rem;
-      box-shadow: 0 20px 55px rgba(15, 23, 42, 0.9);
-    }
-
-    .panel-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      color: var(--text-soft);
-    }
-
-    .panel-list li::before {
-      content: "› ";
-      color: var(--accent-soft);
-    }
-
-    .panel-tag {
-      font-size: 0.75rem;
-      padding: 3px 8px;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.5);
-      display: inline-block;
-      margin-top: 6px;
-      color: var(--accent-soft);
-      background: rgba(15, 23, 42, 0.9);
-    }
-
-    .panel-metrics {
-      background: rgba(10, 16, 35, 0.95);
-      border-radius: 16px;
-      border: 1px solid rgba(30, 64, 175, 0.95);
-      padding: 10px 12px;
-      font-size: 0.8rem;
-    }
-
-    .panel-metrics-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 5px;
-    }
-
-    .panel-metrics-row strong {
-      color: #e5e7eb;
-      font-weight: 600;
-    }
-
-    /* SUPPORT & FOOTER */
-    footer {
-      border-top: 1px solid rgba(15, 23, 42, 0.9);
-      padding-top: 18px;
-      margin-top: 12px;
-      font-size: 0.8rem;
-      color: var(--text-soft);
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .footer-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .footer-links a:hover {
-      color: var(--accent-soft);
-    }
-
-    /* RESPONSIVE */
-    @media (max-width: 980px) {
-      .hero {
-        grid-template-columns: minmax(0, 1fr);
-      }
-
-      .hero-illustration {
-        order: -1;
-      }
-
-      .feature-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .pricing-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .panel-box {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-
-    @media (max-width: 640px) {
-      .nav-inner {
-        flex-wrap: wrap;
-        justify-content: center;
-      }
-
-      .nav-links {
-        display: none;
-      }
-
-      .page-wrap {
-        padding: 22px 14px 40px;
-      }
-
-      .hero {
-        margin-bottom: 34px;
-      }
-
-      .feature-grid,
-      .pricing-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpsLink Hosting</title>
+<style>
+/* ========== GLOBAL THEME ========== */
+:root {
+  --bg-gradient: radial-gradient(circle at top, #0a1220, #040810 80%);
+  --accent: #4e8cff;
+  --text: #e0e6f0;
+  --btn-bg: #2563eb;
+  --btn-hover: #1d4ed8;
+  --btn-text: #ffffff;
+  --snow-color: rgba(255, 255, 255, 0.8);
+  --transition: 0.3s ease;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--bg-gradient);
+  color: var(--text);
+  font-family: "Segoe UI", sans-serif;
+  overflow: hidden;
+  animation: fadeIn 1.5s ease;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+/* ========== CENTER CONTAINER ========== */
+.container {
+  text-align: center;
+  z-index: 2;
+}
+
+.logo {
+  width: 380px;
+  max-width: 85vw;
+  margin-bottom: 25px;
+  position: relative;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+/* ========== TEXT AND BUTTON ========== */
+h1 {
+  font-size: 22px;
+  margin-bottom: 35px;
+  color: var(--text);
+  letter-spacing: 0.6px;
+}
+
+button {
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  border: none;
+  font-size: 18px;
+  padding: 14px 34px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background var(--transition), transform var(--transition);
+  box-shadow: 0 0 15px rgba(78, 140, 255, 0.3);
+}
+
+button:hover {
+  background: var(--btn-hover);
+  transform: translateY(-2px);
+}
+
+/* ========== SNOW ANIMATION ========== */
+.snowflake {
+  position: fixed;
+  top: -10px;
+  color: var(--snow-color);
+  font-size: 1em;
+  user-select: none;
+  pointer-events: none;
+  animation: fall linear infinite;
+  z-index: 1;
+}
+
+@keyframes fall {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(100vh); opacity: 0.6; }
+}
+
+/* ========== SANTA HAT ========== */
+.hat {
+  position: absolute;
+  top: -70px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-5deg);
+  width: 120px;
+  z-index: 3;
+}
+</style>
 </head>
 <body>
-  <!-- animated starfield background -->
-  <div class="bg-stars"></div>
 
-  <!-- NAVBAR -->
-  <header class="navbar">
-    <div class="nav-inner">
-      <div class="logo">
-        OPSLINK<span>HOSTING</span>
-        <span class="logo-pill">Powered by Pterodactyl</span>
-      </div>
+<!-- SNOW BACKGROUND -->
+<script>
+function createSnowflakes() {
+  const snowCount = 50;
+  for (let i = 0; i < snowCount; i++) {
+    const snowflake = document.createElement("div");
+    snowflake.classList.add("snowflake");
+    snowflake.textContent = "❄";
+    snowflake.style.left = Math.random() * 100 + "vw";
+    snowflake.style.animationDuration = (Math.random() * 3 + 3) + "s";
+    snowflake.style.fontSize = (Math.random() * 10 + 10) + "px";
+    snowflake.style.opacity = Math.random();
+    document.body.appendChild(snowflake);
+  }
+}
+createSnowflakes();
+</script>
 
-      <nav class="nav-links">
-        <a href="#top">Home</a>
-        <a href="#pricing">Game Servers</a>
-        <a href="#features">Why OpsLink?</a>
-        <a href="#support">Support</a>
-      </nav>
+<!-- MAIN CONTENT -->
+<div class="container">
+  <img src="https://i.imgur.com/7JgRAfK.png" class="hat" alt="Santa Hat">
+  <img src="https://i.imgur.com/XwLSGNs.png" alt="OpsLink Hosting Logo" class="logo">
+  <h1>Welcome to OpsLink Hosting</h1>
+  <button onclick="window.location.href='https://shop.opslinkcad.com'">Continue to Shop</button>
+</div>
 
-      <div class="nav-cta">
-        <a href="https://panel.opslinkcad.com" class="btn btn-outline">Client Area</a>
-        <a href="https://panel.opslinkcad.com" class="btn btn-primary">Login</a>
-      </div>
-    </div>
-  </header>
-
-  <main id="top" class="page-wrap">
-    <!-- HERO -->
-    <section class="hero">
-      <div>
-        <p class="hero-breadcrumb">Hosting / Game Servers</p>
-
-        <div class="hero-badges">
-          <span class="hero-badge-dot"></span>
-          <span>High performance at low cost</span>
-        </div>
-
-        <h1 class="hero-title">
-          Get an OpsLink-powered<br />
-          <span>Game & FiveM Server.</span>
-        </h1>
-
-        <p class="hero-subtitle">
-          Whether you’re running a small RP project or a full-blown city, OpsLink Hosting gives you
-          fast hardware, instant deployment, and a custom-branded Pterodactyl panel that just works.
-        </p>
-
-        <div class="hero-actions">
-          <a href="#pricing" class="btn btn-primary">View Pricing</a>
-          <a href="https://panel.opslinkcad.com" class="btn btn-outline">Open Panel</a>
-        </div>
-
-        <p class="hero-footnote">
-          Hosted on Google Cloud • Automatic setup • <span>Panel account created right after payment.</span>
-        </p>
-      </div>
-
-      <!-- hero "illustration" card -->
-      <aside class="hero-illustration" aria-label="OpsLink Hosting node preview">
-        <div class="hero-illustration-header">
-          <strong>OPS-NODE-01 • GCLOUD</strong>
-          <div class="window-dots">
-            <div class="window-dot"></div>
-            <div class="window-dot"></div>
-            <div class="window-dot"></div>
-          </div>
-        </div>
-
-        <div class="hero-illustration-body">
-          <div class="panel-mock">
-            <div class="panel-bar">
-              <span>Game Servers</span>
-              <span class="panel-status-pill">Online • 99.9%</span>
-            </div>
-
-            <div class="panel-graph">
-              <div class="panel-graph-line"></div>
-            </div>
-
-            <div class="panel-meta-grid">
-              <div>
-                <div class="panel-meta-label">Node capacity</div>
-                <div class="panel-meta-value">4 vCPU • 16 GB RAM • 100 GB SSD</div>
-              </div>
-              <div>
-                <div class="panel-meta-label">Running servers</div>
-                <div class="panel-meta-value">6 / ~10 recommended</div>
-              </div>
-              <div>
-                <div class="panel-meta-label">Average CPU</div>
-                <div class="panel-meta-value">≈ 58%</div>
-              </div>
-              <div>
-                <div class="panel-meta-label">Average RAM</div>
-                <div class="panel-meta-value">≈ 9.3 / 16 GB</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="hero-side-card">
-            <div class="hero-side-row">
-              <span>Autoscaling ready</span>
-              <span class="pill-ok">New nodes soon</span>
-            </div>
-            <div class="hero-side-row">
-              <span>Deploy time</span>
-              <span>≈ 90 seconds</span>
-            </div>
-            <div class="hero-side-row">
-              <span>Backups</span>
-              <span class="pill-ok">Daily snapshots</span>
-            </div>
-            <div class="hero-side-row">
-              <span>Last incident</span>
-              <span class="pill-warn">Over 30 days ago</span>
-            </div>
-          </div>
-        </div>
-      </aside>
-    </section>
-
-    <!-- FEATURES -->
-    <section id="features">
-      <h2 class="section-title">Why host with OpsLink?</h2>
-      <p class="section-subtitle">
-        Built for FiveM, ERLC, and communities that actually need stability — not just a cheap box.
-        Sized so you can run multiple servers per node without guessing.
-      </p>
-
-      <div class="feature-grid">
-        <article class="feature-card">
-          <span class="feature-tag">Performance</span>
-          <h3>Optimized for many servers per node</h3>
-          <p>
-            Our main node (4 vCPU / 16 GB RAM / 100 GB SSD) is tuned for around
-            <strong>8–10 active FiveM-sized servers</strong> or dozens of lighter game servers, with
-            room to add more nodes when you grow.
-          </p>
-        </article>
-
-        <article class="feature-card">
-          <span class="feature-tag">Control panel</span>
-          <h3>Pterodactyl, wrapped in OpsLink</h3>
-          <p>
-            Full console, SFTP, backups, databases and schedules through a panel skinned to match the
-            OpsLink ecosystem — your players never see raw “stock” Pterodactyl.
-          </p>
-        </article>
-
-        <article class="feature-card">
-          <span class="feature-tag">Automation</span>
-          <h3>Automatic account &amp; server creation</h3>
-          <p>
-            Payment clears → we create the panel account, allocate the right resources, spin up the
-            server and send login details. No manual ticket work for basic orders.
-          </p>
-        </article>
-
-        <article class="feature-card">
-          <span class="feature-tag">Network</span>
-          <h3>Google Cloud + DDoS protection</h3>
-          <p>
-            Hosted on Google Cloud us-central1 with premium routing and DDoS protection so your city
-            doesn’t vanish every time someone gets mad in OOC.
-          </p>
-        </article>
-
-        <article class="feature-card">
-          <span class="feature-tag">Safety</span>
-          <h3>Automatic daily snapshots</h3>
-          <p>
-            Node-level snapshots and optional server-level backups protect you from bad updates,
-            broken scripts, or “oops I deleted that” moments.
-          </p>
-        </article>
-
-        <article class="feature-card">
-          <span class="feature-tag">Support</span>
-          <h3>Staff that know RP tools</h3>
-          <p>
-            We understand whitelists, queues, EasyAdmin, vMenu, CAD integrations, and more — so when
-            you ask for help, you’re not explaining everything from scratch.
-          </p>
-        </article>
-      </div>
-    </section>
-
-    <!-- PRICING -->
-    <section id="pricing" class="pricing-section">
-      <h2 class="section-title">Plans that let you stack multiple servers per node.</h2>
-      <p class="section-subtitle">
-        Every plan includes OpsLink-branded Pterodactyl access, SFTP, MySQL, and automatic deployment.
-        Scale into more nodes when you outgrow OPS-NODE-01.
-      </p>
-
-      <div class="pricing-grid">
-        <!-- Small / Dev -->
-        <article class="pricing-card">
-          <div class="plan-name">Street RP / Dev</div>
-          <div class="plan-note">Perfect for dev boxes or small whitelists</div>
-          <div class="plan-price">$6.00<span>/month</span></div>
-
-          <div class="plan-specs">
-            <div><strong>2 vCores</strong> CPU share</div>
-            <div><strong>3 GB</strong> RAM</div>
-            <div><strong>25 GB</strong> NVMe</div>
-            <div><strong>Up to ~48</strong> players</div>
-          </div>
-
-          <ul class="plan-features">
-            <li>Great for testing frameworks & scripts</li>
-            <li>1 MySQL database</li>
-            <li>Optional scheduled backups</li>
-            <li>Instant panel & server creation</li>
-          </ul>
-
-          <button
-            class="btn btn-primary"
-            data-plan="street"
-            data-ram="3"
-            data-cpu="2"
-            data-disk="25"
-          >
-            Order Street RP Server
-          </button>
-        </article>
-
-        <!-- Main City -->
-        <article class="pricing-card highlight">
-          <span class="pricing-badge">Most Popular</span>
-          <div class="plan-name">City Core</div>
-          <div class="plan-note">Sized for serious, active FiveM cities</div>
-          <div class="plan-price">$12.00<span>/month</span></div>
-
-          <div class="plan-specs">
-            <div><strong>3 vCores</strong> CPU share</div>
-            <div><strong>6 GB</strong> RAM</div>
-            <div><strong>40 GB</strong> NVMe</div>
-            <div><strong>Up to ~96</strong> players</div>
-          </div>
-
-          <ul class="plan-features">
-            <li>Balanced CPU/RAM for main servers</li>
-            <li>2 MySQL databases included</li>
-            <li>Priority support & basic migration help</li>
-            <li>Automatic restarts & scheduled tasks</li>
-          </ul>
-
-          <button
-            class="btn btn-primary"
-            data-plan="city-core"
-            data-ram="6"
-            data-cpu="3"
-            data-disk="40"
-          >
-            Order City Core Server
-          </button>
-        </article>
-
-        <!-- Network / Multi -->
-        <article class="pricing-card">
-          <div class="plan-name">Network Stack</div>
-          <div class="plan-note">For hubs, dev + live, or multiple smaller servers</div>
-          <div class="plan-price">$22.00<span>/month</span></div>
-
-          <div class="plan-specs">
-            <div><strong>4 vCores</strong> CPU share</div>
-            <div><strong>8 GB</strong> RAM</div>
-            <div><strong>60 GB</strong> NVMe</div>
-            <div><strong>Multi-server</strong> friendly</div>
-          </div>
-
-          <ul class="plan-features">
-            <li>Run main + dev, or several lightweight game servers</li>
-            <li>Up to 3 MySQL databases</li>
-            <li>Great for communities with CADs, bots & extras</li>
-            <li>Talk to us for custom multi-node scaling</li>
-          </ul>
-
-          <button
-            class="btn btn-primary"
-            data-plan="network-stack"
-            data-ram="8"
-            data-cpu="4"
-            data-disk="60"
-          >
-            Talk to sales / Order
-          </button>
-        </article>
-      </div>
-    </section>
-
-    <!-- PANEL SECTION -->
-    <section id="panel" class="panel-section">
-      <h2 class="section-title">Pterodactyl panel, fully OpsLink-branded.</h2>
-      <p class="section-subtitle">
-        Your community logs into an OpsLink-themed panel while Pterodactyl handles all the heavy
-        lifting in the background.
-      </p>
-
-      <div class="panel-box">
-        <div>
-          <p>
-            OpsLink Hosting is tightly integrated with our Pterodactyl nodes. When an order is paid,
-            our automation can:
-          </p>
-
-          <ul class="panel-list">
-            <li>Create a panel user with the customer’s email</li>
-            <li>Spin up a server on the correct node &amp; allocation</li>
-            <li>Apply RAM, CPU &amp; disk limits based on the plan</li>
-            <li>Send panel URL and login details via email or Discord</li>
-          </ul>
-
-          <span class="panel-tag">
-            Next step for you: connect your billing to the Pterodactyl API and wire these plans in.
-          </span>
-        </div>
-
-        <aside class="panel-metrics">
-          <div class="panel-metrics-row">
-            <strong>Auto-deploy jobs</strong>
-            <span class="pill-ok">Queued: 0 • Healthy</span>
-          </div>
-          <div class="panel-metrics-row">
-            <span>Average deployment time</span>
-            <span>≈ 90 seconds</span>
-          </div>
-          <div class="panel-metrics-row">
-            <span>Last failed create-server</span>
-            <span class="pill-warn">Over 30 days ago</span>
-          </div>
-          <div class="panel-metrics-row">
-            <span>Servers on OPS-NODE-01</span>
-            <span>6 / ~10 recommended</span>
-          </div>
-        </aside>
-      </div>
-    </section>
-
-    <!-- SUPPORT / FOOTER -->
-    <section id="support">
-      <h2 class="section-title">Need to migrate or stack multiple servers?</h2>
-      <p class="section-subtitle">
-        We can help move your existing FiveM city, databases, and configs into OpsLink Hosting and
-        design how many servers you should run per node as you scale.
-      </p>
-    </section>
-
-    <footer>
-      <div>© <span id="year"></span> OpsLink Hosting. Part of the OpsLink Systems ecosystem.</div>
-
-      <div class="footer-links">
-        <a href="#top">Home</a>
-        <a href="legal.html">Legal</a>
-        <a href="tos.html">Terms</a>
-        <a href="privacy.html">Privacy</a>
-        <a href="mailto:support@opslinksystems.com">Support</a>
-      </div>
-    </footer>
-  </main>
-
-  <script>
-    // Year in footer
-    document.getElementById("year").textContent = new Date().getFullYear();
-
-    // Placeholder: when wired up, these buttons will call your billing + Pterodactyl API
-    document.querySelectorAll("button[data-plan]").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const { plan, ram, cpu, disk } = btn.dataset;
-        console.log("Selected plan:", plan, "RAM:", ram, "CPU:", cpu, "Disk:", disk);
-        alert(
-          "In production, this button would send the plan (" +
-            plan +
-            ") to your billing system, then create a Pterodactyl user + server automatically."
-        );
-      });
-    });
-  </script>
 </body>
 </html>
