@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>OpsLink Hosting</title>
 <style>
-/* ========= BASE THEME ========= */
 :root {
   --bg-gradient: radial-gradient(circle at top, #0a0f1c, #03060e 85%);
   --accent: #4e8cff;
@@ -14,7 +13,6 @@
   --btn-hover: #1d4ed8;
   --btn-text: #ffffff;
   --snow-color: rgba(255, 255, 255, 0.9);
-  --transition: 0.3s ease;
 }
 
 body {
@@ -34,7 +32,6 @@ body {
   to {opacity: 1;}
 }
 
-/* ========= CENTER CONTAINER ========= */
 .container {
   text-align: center;
   z-index: 2;
@@ -43,13 +40,27 @@ body {
 .logo-wrapper {
   position: relative;
   display: inline-block;
-  margin-bottom: 15px;
+  margin-bottom: 25px;
   animation: float 3s ease-in-out infinite;
 }
 
+.logo-glow {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(78,140,255,0.25) 0%, transparent 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  filter: blur(40px);
+  z-index: 0;
+}
+
 .logo {
-  width: 230px;
+  width: 320px;
   max-width: 90vw;
+  z-index: 2;
+  position: relative;
 }
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
@@ -59,27 +70,26 @@ body {
 /* Santa Hat */
 .hat {
   position: absolute;
-  top: -100px;
-  left: 63%;
+  top: -120px;
+  left: 68%;
   transform: rotate(-15deg);
-  width: 150px;
+  width: 200px;
   z-index: 3;
 }
 
 /* Text styling */
 h1 {
-  font-size: 26px;
-  margin: 18px 0 10px;
-  font-weight: 600;
-  color: var(--text);
+  font-size: 28px;
+  margin: 20px 0 10px;
+  font-weight: 700;
 }
 
 p {
-  font-size: 15px;
-  color: #9da5b5;
-  max-width: 460px;
-  margin: 0 auto 35px;
-  line-height: 1.5;
+  font-size: 16px;
+  color: #a8b0c5;
+  max-width: 520px;
+  margin: 0 auto 40px;
+  line-height: 1.6;
 }
 
 /* Button */
@@ -87,12 +97,12 @@ button {
   background: var(--btn-bg);
   color: var(--btn-text);
   border: none;
-  font-size: 17px;
-  padding: 14px 40px;
-  border-radius: 10px;
+  font-size: 18px;
+  padding: 15px 45px;
+  border-radius: 12px;
   cursor: pointer;
-  box-shadow: 0 0 18px rgba(37, 99, 235, 0.35);
-  transition: all var(--transition);
+  box-shadow: 0 0 25px rgba(37, 99, 235, 0.3);
+  transition: all 0.3s ease;
   animation: glow 2.5s infinite ease-in-out;
 }
 button:hover {
@@ -100,8 +110,8 @@ button:hover {
   transform: translateY(-2px);
 }
 @keyframes glow {
-  0%, 100% { box-shadow: 0 0 18px rgba(78,140,255,0.3); }
-  50% { box-shadow: 0 0 25px rgba(78,140,255,0.6); }
+  0%, 100% { box-shadow: 0 0 25px rgba(78,140,255,0.3); }
+  50% { box-shadow: 0 0 35px rgba(78,140,255,0.6); }
 }
 
 /* Snow */
@@ -123,16 +133,15 @@ button:hover {
 </head>
 <body>
 
-<!-- SNOW BACKGROUND -->
 <script>
 function createSnowflakes() {
-  const snowCount = 60;
+  const snowCount = 70;
   for (let i = 0; i < snowCount; i++) {
     const snowflake = document.createElement("div");
     snowflake.classList.add("snowflake");
     snowflake.textContent = "❄";
     snowflake.style.left = Math.random() * 100 + "vw";
-    snowflake.style.animationDuration = (Math.random() * 5 + 4) + "s";
+    snowflake.style.animationDuration = (Math.random() * 6 + 4) + "s";
     snowflake.style.fontSize = (Math.random() * 12 + 10) + "px";
     snowflake.style.opacity = Math.random();
     document.body.appendChild(snowflake);
@@ -141,9 +150,9 @@ function createSnowflakes() {
 createSnowflakes();
 </script>
 
-<!-- MAIN CONTENT -->
 <div class="container">
   <div class="logo-wrapper">
+    <div class="logo-glow"></div>
     <img src="https://i.imgur.com/VURJsAs.png" alt="Santa Hat" class="hat">
     <img src="https://i.imgur.com/XwLSGNs.png" alt="OpsLink Hosting Logo" class="logo">
   </div>
