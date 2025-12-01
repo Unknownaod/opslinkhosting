@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>OpsLink Hosting – Game & FiveM Hosting Powered by Pterodactyl</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    /* ================================
+       GLOBAL THEME
+    ================================= */
+    :root {
+      --bg-main: #050813;
+      --bg-nav: rgba(4, 7, 16, 0.9);
+      --bg-card: rgba(13, 18, 34, 0.95);
+      --bg-pill: rgba(15, 23, 42, 0.9);
+
+      --accent: #4e8cff;
+      --accent-soft: #6ea0ff;
+      --accent-strong: #2563eb;
+
+      --text-main: #e5e7eb;
+      --text-soft: #9ca3af;
+      --border-subtle: rgba(148, 163, 184, 0.25);
+      --border-strong: rgba(148, 163, 184, 0.5);
+      --danger: #f97373;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #111827 0, #020617 50%, #020617 100%);
+      color: var(--text-main);
+      font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* ================================
+       NAVBAR
+    ================================= */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: var(--bg-nav);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 1.15rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    .logo-pill {
+      font-size: 0.7rem;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: rgba(37, 99, 235, 0.18);
+      border: 1px solid rgba(96, 165, 250, 0.5);
+      color: var(--accent-soft);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 0.9rem;
+    }
+
+    .nav-links a {
+      color: var(--text-soft);
+      padding: 6px 2px;
+      border-bottom: 2px solid transparent;
+      transition: color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .nav-links a:hover {
+      color: #f9fafb;
+      border-bottom-color: var(--accent);
+    }
+
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn {
+      border-radius: 999px;
+      padding: 7px 16px;
+      border: 1px solid transparent;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease, transform 0.08s ease,
+        box-shadow 0.15s ease, color 0.15s ease;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border-color: rgba(148, 163, 184, 0.4);
+      color: var(--text-soft);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent-soft);
+      color: #f9fafb;
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+      color: white;
+      box-shadow: 0 0 18px rgba(59, 130, 246, 0.5);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 22px rgba(59, 130, 246, 0.75);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+      box-shadow: none;
+    }
+
+    /* ================================
+       LAYOUT
+    ================================= */
+    .page-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 20px 60px;
+    }
+
+    /* ================================
+       HERO
+    ================================= */
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 40px;
+      align-items: center;
+      margin-top: 10px;
+      margin-bottom: 50px;
+    }
+
+    .hero-title {
+      font-size: clamp(2.2rem, 3vw + 1rem, 3.1rem);
+      font-weight: 750;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 14px;
+    }
+
+    .hero-title span {
+      background: linear-gradient(120deg, #60a5fa, #a855f7, #f97316);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 0.98rem;
+      color: var(--text-soft);
+      max-width: 480px;
+      margin-bottom: 20px;
+    }
+
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+
+    .badge {
+      font-size: 0.75rem;
+      padding: 5px 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: rgba(15, 23, 42, 0.75);
+      color: var(--text-soft);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 10px rgba(34, 197, 94, 0.9);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .hero-footnote {
+      font-size: 0.8rem;
+      color: var(--text-soft);
+    }
+
+    .hero-footnote span {
+      color: var(--accent-soft);
+    }
+
+    .hero-panel {
+      position: relative;
+      border-radius: 22px;
+      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.22), transparent 55%),
+        radial-gradient(circle at bottom right, rgba(129, 140, 248, 0.2), transparent 50%),
+        var(--bg-card);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      padding: 18px 18px 16px;
+      box-shadow: 0 26px 70px rgba(15, 23, 42, 0.8);
+      overflow: hidden;
+    }
+
+    .hero-panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 0.82rem;
+      color: var(--text-soft);
+    }
+
+    .hero-panel-header span {
+      font-weight: 500;
+      color: var(--accent-soft);
+    }
+
+    .hero-panel-dot-row {
+      display: flex;
+      gap: 5px;
+    }
+
+    .hero-panel-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+    }
+
+    .hero-panel-body {
+      background: rgba(15, 23, 42, 0.92);
+      border-radius: 16px;
+      padding: 12px 14px;
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      font-size: 0.76rem;
+    }
+
+    .hero-panel-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+
+    .hero-panel-row-label {
+      color: var(--text-soft);
+    }
+
+    .hero-panel-row-value {
+      font-weight: 500;
+    }
+
+    .hero-panel-row-value.ok {
+      color: #4ade80;
+    }
+
+    .hero-panel-row-value.warn {
+      color: #facc15;
+    }
+
+    .hero-panel-row-value.danger {
+      color: #fb7185;
+    }
+
+    .hero-usage-bar {
+      margin-top: 6px;
+      margin-bottom: 6px;
+      background: #020617;
+      border-radius: 999px;
+      height: 7px;
+      overflow: hidden;
+      border: 1px solid rgba(30, 64, 175, 0.9);
+    }
+
+    .hero-usage-fill {
+      height: 100%;
+      width: 62%;
+      background: linear-gradient(90deg, #22c55e, #f97316, #ef4444);
+    }
+
+    .hero-panel-footer {
+      margin-top: 10px;
+      font-size: 0.74rem;
+      color: var(--text-soft);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .hero-panel-footer span {
+      color: var(--accent-soft);
+    }
+
+    /* ================================
+       FEATURES
+    ================================= */
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .section-subtitle {
+      font-size: 0.9rem;
+      color: var(--text-soft);
+      margin-bottom: 18px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-bottom: 40px;
+    }
+
+    .feature-card {
+      background: var(--bg-pill);
+      border-radius: 18px;
+      padding: 14px;
+      border: 1px solid var(--border-subtle);
+      font-size: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-height: 110px;
+    }
+
+    .feature-card h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .feature-tag {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent-soft);
+    }
+
+    /* ================================
+       PRICING
+    ================================= */
+    .pricing-section {
+      margin-bottom: 42px;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+      align-items: stretch;
+    }
+
+    .pricing-card {
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.98), #020617);
+      border-radius: 20px;
+      padding: 18px 16px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pricing-card.highlight {
+      border-color: var(--accent);
+      box-shadow: 0 26px 60px rgba(37, 99, 235, 0.5);
+    }
+
+    .pricing-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      font-size: 0.7rem;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: rgba(37, 99, 235, 0.18);
+      border: 1px solid rgba(96, 165, 250, 0.7);
+      color: var(--accent-soft);
+    }
+
+    .plan-name {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .plan-price {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .plan-price span {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-soft);
+    }
+
+    .plan-specs {
+      font-size: 0.85rem;
+      color: var(--text-soft);
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 4px 10px;
+    }
+
+    .plan-specs strong {
+      color: #e5e7eb;
+      font-weight: 600;
+    }
+
+    .plan-features {
+      list-style: none;
+      margin-top: 8px;
+      margin-bottom: 10px;
+      font-size: 0.8rem;
+      color: var(--text-soft);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .plan-features li::before {
+      content: "• ";
+      color: var(--accent-soft);
+    }
+
+    .pricing-card .btn-primary {
+      width: 100%;
+      text-align: center;
+      margin-top: auto;
+    }
+
+    /* ================================
+       PTERODACTYL SECTION
+    ================================= */
+    .panel-section {
+      margin-bottom: 45px;
+    }
+
+    .panel-box {
+      border-radius: 18px;
+      padding: 16px 16px 14px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: radial-gradient(circle at left, rgba(37, 99, 235, 0.3), transparent 55%),
+        rgba(15, 23, 42, 0.9);
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      gap: 16px;
+      font-size: 0.85rem;
+    }
+
+    .panel-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      color: var(--text-soft);
+    }
+
+    .panel-list li::before {
+      content: "› ";
+      color: var(--accent-soft);
+    }
+
+    .panel-tag {
+      font-size: 0.75rem;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      display: inline-block;
+      margin-top: 6px;
+      color: var(--accent-soft);
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .panel-metrics {
+      background: rgba(15, 23, 42, 0.95);
+      border-radius: 16px;
+      border: 1px solid rgba(30, 64, 175, 0.9);
+      padding: 10px 12px;
+      font-size: 0.8rem;
+    }
+
+    .panel-metrics-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+
+    .panel-metrics-row strong {
+      font-weight: 600;
+      color: #e5e7eb;
+    }
+
+    .pill-ok {
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      background: rgba(22, 163, 74, 0.15);
+      color: #4ade80;
+      border: 1px solid rgba(74, 222, 128, 0.5);
+    }
+
+    .pill-warn {
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      background: rgba(234, 179, 8, 0.2);
+      color: #facc15;
+      border: 1px solid rgba(250, 204, 21, 0.5);
+    }
+
+    /* ================================
+       FOOTER
+    ================================= */
+    footer {
+      border-top: 1px solid rgba(15, 23, 42, 0.9);
+      padding-top: 18px;
+      margin-top: 12px;
+      font-size: 0.8rem;
+      color: var(--text-soft);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .footer-links a {
+      color: var(--text-soft);
+    }
+
+    .footer-links a:hover {
+      color: var(--accent-soft);
+    }
+
+    /* ================================
+       RESPONSIVE
+    ================================= */
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .hero-panel {
+        order: -1;
+      }
+
+      .feature-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .pricing-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .panel-box {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .nav-inner {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .page-wrap {
+        padding: 22px 14px 40px;
+      }
+
+      .feature-grid,
+      .pricing-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .hero {
+        margin-bottom: 30px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="nav-inner">
+      <div class="logo">
+        OpsLink<span>Hosting</span>
+        <span class="logo-pill">Powered by Pterodactyl</span>
+      </div>
+
+      <nav class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#panel">Panel</a>
+        <a href="#support">Support</a>
+      </nav>
+
+      <div class="nav-cta">
+        <a href="#panel" class="btn btn-outline">Client Area</a>
+        <a href="#pricing" class="btn btn-primary">Order Server</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-wrap">
+    <!-- HERO -->
+    <section class="hero">
+      <div>
+        <div class="hero-badges">
+          <div class="badge"><span class="badge-dot"></span> Online nodes with live monitoring</div>
+          <div class="badge">Low-latency Canadian & US locations</div>
+        </div>
+
+        <h1 class="hero-title">
+          Game hosting built for serious
+          <span>roleplay communities</span>.
+        </h1>
+
+        <p class="hero-subtitle">
+          OpsLink Hosting gives you high-performance game servers, instant deployment, and a
+          custom-branded Pterodactyl panel that plugs into your OpsLink ecosystem.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#pricing" class="btn btn-primary">Start a server in minutes</a>
+          <a href="#panel" class="btn btn-outline">Preview control panel</a>
+        </div>
+
+        <p class="hero-footnote">
+          No contracts, cancel anytime. Automatic setup &amp; <span>panel account creation</span> on payment.
+        </p>
+      </div>
+
+      <aside class="hero-panel" aria-label="OpsLink Hosting node preview">
+        <div class="hero-panel-header">
+          <span>Node-01 • OPS-CA-FIVEM</span>
+          <div class="hero-panel-dot-row">
+            <div class="hero-panel-dot"></div>
+            <div class="hero-panel-dot"></div>
+            <div class="hero-panel-dot"></div>
+          </div>
+        </div>
+
+        <div class="hero-panel-body">
+          <div class="hero-panel-row">
+            <span class="hero-panel-row-label">Status</span>
+            <span class="hero-panel-row-value ok">Online • 99.9% Uptime</span>
+          </div>
+          <div class="hero-panel-row">
+            <span class="hero-panel-row-label">Players Connected</span>
+            <span class="hero-panel-row-value">87 / 128</span>
+          </div>
+
+          <div class="hero-panel-row">
+            <span class="hero-panel-row-label">CPU Load</span>
+            <span class="hero-panel-row-value warn">72%</span>
+          </div>
+          <div class="hero-usage-bar">
+            <div class="hero-usage-fill"></div>
+          </div>
+
+          <div class="hero-panel-row">
+            <span class="hero-panel-row-label">RAM Usage</span>
+            <span class="hero-panel-row-value danger">21.4 / 24 GB</span>
+          </div>
+
+          <div class="hero-panel-footer">
+            <span>Real-time stats via Pterodactyl API.</span>
+            <span>Auto-deploy: &lt;2 minutes after payment.</span>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <!-- FEATURES -->
+    <section id="features">
+      <h2 class="section-title">Why host with OpsLink?</h2>
+      <p class="section-subtitle">
+        Built specifically for FiveM, ERLC communities, and game networks that actually need stability.
+      </p>
+
+      <div class="feature-grid">
+        <article class="feature-card">
+          <span class="feature-tag">Hardware</span>
+          <h3>High-clock CPUs & NVMe storage</h3>
+          <p>
+            Modern Ryzen/Intel nodes, NVMe SSDs, and plenty of RAM per container. No noisy shared hosts here.
+          </p>
+        </article>
+
+        <article class="feature-card">
+          <span class="feature-tag">Control</span>
+          <h3>Pterodactyl panel, branded as OpsLink</h3>
+          <p>
+            Full access to console, SFTP, backups, and schedules through a panel skinned to match your OpsLink
+            stack.
+          </p>
+        </article>
+
+        <article class="feature-card">
+          <span class="feature-tag">Automation</span>
+          <h3>Instant setup &amp; auto account creation</h3>
+          <p>
+            When you pay, our system talks to Pterodactyl and creates your panel account, server, and allocation
+            immediately.
+          </p>
+        </article>
+
+        <article class="feature-card">
+          <span class="feature-tag">Network</span>
+          <h3>DDoS protected network</h3>
+          <p>
+            Enterprise-grade protection with smart filtering so you stay online when it matters most.
+          </p>
+        </article>
+
+        <article class="feature-card">
+          <span class="feature-tag">Backups</span>
+          <h3>Automated backups</h3>
+          <p>
+            Scheduled backups with easy restore points to protect your configs, scripts, and databases.
+          </p>
+        </article>
+
+        <article class="feature-card">
+          <span class="feature-tag">Support</span>
+          <h3>Staff that actually understand RP</h3>
+          <p>
+            We know whitelists, CADs, queues, EasyAdmin, vMenu, and more. Real help, not copy-paste replies.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section id="pricing" class="pricing-section">
+      <h2 class="section-title">Simple plans that scale with your community</h2>
+      <p class="section-subtitle">
+        All plans include Pterodactyl access, SFTP, MySQL database, and automatic deployment after payment.
+      </p>
+
+      <div class="pricing-grid">
+        <!-- Starter Plan -->
+        <article class="pricing-card">
+          <div class="plan-name">Starter City</div>
+          <div class="plan-price">$8.00<span>/month</span></div>
+
+          <div class="plan-specs">
+            <div><strong>3 vCores</strong> CPU</div>
+            <div><strong>6 GB</strong> RAM</div>
+            <div><strong>40 GB</strong> NVMe</div>
+            <div><strong>64</strong> Slots (recommended)</div>
+          </div>
+
+          <ul class="plan-features">
+            <li>Perfect for new communities</li>
+            <li>1 MySQL database</li>
+            <li>Automatic backups (daily)</li>
+            <li>Instant panel + server creation</li>
+          </ul>
+
+          <button
+            class="btn btn-primary"
+            data-plan="starter"
+            data-ram="6"
+            data-cpu="3"
+          >
+            Order Starter Server
+          </button>
+        </article>
+
+        <!-- Community Plan -->
+        <article class="pricing-card highlight">
+          <span class="pricing-badge">Most Popular</span>
+          <div class="plan-name">Community Plus</div>
+          <div class="plan-price">$16.00<span>/month</span></div>
+
+          <div class="plan-specs">
+            <div><strong>4 vCores</strong> CPU</div>
+            <div><strong>10 GB</strong> RAM</div>
+            <div><strong>60 GB</strong> NVMe</div>
+            <div><strong>128</strong> Slots (recommended)</div>
+          </div>
+
+          <ul class="plan-features">
+            <li>For active &amp; growing RP servers</li>
+            <li>Priority support</li>
+            <li>Advanced scheduling & tasks</li>
+            <li>2 MySQL databases included</li>
+          </ul>
+
+          <button
+            class="btn btn-primary"
+            data-plan="community"
+            data-ram="10"
+            data-cpu="4"
+          >
+            Order Community Server
+          </button>
+        </article>
+
+        <!-- Network Plan -->
+        <article class="pricing-card">
+          <div class="plan-name">Network / Franchise</div>
+          <div class="plan-price">$32.00<span>/month</span></div>
+
+          <div class="plan-specs">
+            <div><strong>6 vCores</strong> CPU</div>
+            <div><strong>16 GB</strong> RAM</div>
+            <div><strong>100 GB</strong> NVMe</div>
+            <div><strong>Up to 200</strong> Slots</div>
+          </div>
+
+          <ul class="plan-features">
+            <li>For networks, multiple frameworks, or dev envs</li>
+            <li>Custom CPU/RAM allocations available</li>
+            <li>Staging + production servers</li>
+            <li>Contact us for custom scaling</li>
+          </ul>
+
+          <button
+            class="btn btn-primary"
+            data-plan="network"
+            data-ram="16"
+            data-cpu="6"
+          >
+            Talk to sales / Order
+          </button>
+        </article>
+      </div>
+    </section>
+
+    <!-- PTERODACTYL / PANEL SECTION -->
+    <section id="panel" class="panel-section">
+      <h2 class="section-title">Pterodactyl panel, wrapped in OpsLink.</h2>
+      <p class="section-subtitle">
+        Your clients log into an OpsLink-branded panel while Pterodactyl does the heavy lifting in the
+        background.
+      </p>
+
+      <div class="panel-box">
+        <div>
+          <p>
+            OpsLink Hosting is tightly integrated with your Pterodactyl node. When an order is paid, we’ll use
+            the Pterodactyl API to:
+          </p>
+
+          <ul class="panel-list">
+            <li>Create a panel user with the customer’s email</li>
+            <li>Assign them to the correct server &amp; allocation</li>
+            <li>Set RAM, CPU, disk limits based on the plan</li>
+            <li>Send login details via email or your Discord bot</li>
+          </ul>
+
+          <span class="panel-tag">Next step: wire these buttons into your billing + Pterodactyl API.</span>
+        </div>
+
+        <aside class="panel-metrics">
+          <div class="panel-metrics-row">
+            <strong>Auto-Deploy Jobs</strong>
+            <span class="pill-ok">Queued: 0 • Healthy</span>
+          </div>
+          <div class="panel-metrics-row">
+            <span>Average deployment time</span>
+            <span>~ 90 seconds</span>
+          </div>
+          <div class="panel-metrics-row">
+            <span>Last failed create-server</span>
+            <span class="pill-warn">34 days ago</span>
+          </div>
+          <div class="panel-metrics-row">
+            <span>Current active servers</span>
+            <span>47</span>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- SUPPORT / FOOTER -->
+    <section id="support">
+      <h2 class="section-title">Need to migrate or set up a new box?</h2>
+      <p class="section-subtitle">
+        We can move your existing FiveM server, database, and configs into OpsLink Hosting with minimal
+        downtime.
+      </p>
+    </section>
+
+    <footer>
+      <div>© <span id="year"></span> OpsLink Hosting. Part of the OpsLink Systems ecosystem.</div>
+
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="legal.html">Legal</a>
+        <a href="tos.html">Terms</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="mailto:support@opslinksystems.com">Support</a>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    // Simple year in footer
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    /*
+      NEXT STEP (when you're ready):
+
+      - Attach a click handler for `.btn-primary` buttons that:
+          1) Sends the selected plan (data-plan, data-ram, data-cpu) to your billing system.
+          2) On successful payment, your backend calls the Pterodactyl API to:
+             - Create a user (if not exists)
+             - Create a server for that user with the right limits
+             - Email / DM them the panel URL + credentials.
+
+      We can wire that all up in Node.js or your existing API once you’re ready.
+    */
+  </script>
+</body>
+</html>
