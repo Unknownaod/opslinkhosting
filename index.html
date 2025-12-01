@@ -5,15 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>OpsLink Hosting</title>
 <style>
-/* ========== GLOBAL THEME ========== */
+/* ========= BASE THEME ========= */
 :root {
-  --bg-gradient: radial-gradient(circle at top, #0a1220, #040810 80%);
+  --bg-gradient: radial-gradient(circle at top, #0a0f1c, #03060e 85%);
   --accent: #4e8cff;
   --text: #e0e6f0;
   --btn-bg: #2563eb;
   --btn-hover: #1d4ed8;
   --btn-text: #ffffff;
-  --snow-color: rgba(255, 255, 255, 0.8);
+  --snow-color: rgba(255, 255, 255, 0.9);
   --transition: 0.3s ease;
 }
 
@@ -29,57 +29,82 @@ body {
   overflow: hidden;
   animation: fadeIn 1.5s ease;
 }
-
 @keyframes fadeIn {
   from {opacity: 0;}
   to {opacity: 1;}
 }
 
-/* ========== CENTER CONTAINER ========== */
+/* ========= CENTER CONTAINER ========= */
 .container {
   text-align: center;
   z-index: 2;
 }
 
-.logo {
-  width: 380px;
-  max-width: 85vw;
-  margin-bottom: 25px;
+.logo-wrapper {
   position: relative;
+  display: inline-block;
+  margin-bottom: 15px;
   animation: float 3s ease-in-out infinite;
 }
 
+.logo {
+  width: 140px;
+  max-width: 80vw;
+}
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
+  50% { transform: translateY(-6px); }
 }
 
-/* ========== TEXT AND BUTTON ========== */
+/* Santa Hat */
+.hat {
+  position: absolute;
+  top: -60px;
+  left: 60%;
+  transform: rotate(-15deg);
+  width: 90px;
+  z-index: 3;
+}
+
+/* Text styling */
 h1 {
-  font-size: 22px;
-  margin-bottom: 35px;
+  font-size: 24px;
+  margin: 18px 0 8px;
+  font-weight: 600;
   color: var(--text);
-  letter-spacing: 0.6px;
 }
 
+p {
+  font-size: 15px;
+  color: #9da5b5;
+  max-width: 400px;
+  margin: 0 auto 30px;
+  line-height: 1.5;
+}
+
+/* Button */
 button {
   background: var(--btn-bg);
   color: var(--btn-text);
   border: none;
-  font-size: 18px;
-  padding: 14px 34px;
-  border-radius: 8px;
+  font-size: 17px;
+  padding: 14px 38px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: background var(--transition), transform var(--transition);
-  box-shadow: 0 0 15px rgba(78, 140, 255, 0.3);
+  box-shadow: 0 0 15px rgba(37, 99, 235, 0.3);
+  transition: all var(--transition);
+  animation: glow 2.5s infinite ease-in-out;
 }
-
 button:hover {
   background: var(--btn-hover);
   transform: translateY(-2px);
 }
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 15px rgba(78,140,255,0.3); }
+  50% { box-shadow: 0 0 25px rgba(78,140,255,0.6); }
+}
 
-/* ========== SNOW ANIMATION ========== */
+/* Snow */
 .snowflake {
   position: fixed;
   top: -10px;
@@ -90,20 +115,9 @@ button:hover {
   animation: fall linear infinite;
   z-index: 1;
 }
-
 @keyframes fall {
   0% { transform: translateY(0); opacity: 1; }
   100% { transform: translateY(100vh); opacity: 0.6; }
-}
-
-/* ========== SANTA HAT ========== */
-.hat {
-  position: absolute;
-  top: -70px;
-  left: 50%;
-  transform: translateX(-50%) rotate(-5deg);
-  width: 120px;
-  z-index: 3;
 }
 </style>
 </head>
@@ -118,7 +132,7 @@ function createSnowflakes() {
     snowflake.classList.add("snowflake");
     snowflake.textContent = "❄";
     snowflake.style.left = Math.random() * 100 + "vw";
-    snowflake.style.animationDuration = (Math.random() * 3 + 3) + "s";
+    snowflake.style.animationDuration = (Math.random() * 4 + 3) + "s";
     snowflake.style.fontSize = (Math.random() * 10 + 10) + "px";
     snowflake.style.opacity = Math.random();
     document.body.appendChild(snowflake);
@@ -129,9 +143,13 @@ createSnowflakes();
 
 <!-- MAIN CONTENT -->
 <div class="container">
-  <img src="https://i.imgur.com/7JgRAfK.png" class="hat" alt="Santa Hat">
-  <img src="https://i.imgur.com/XwLSGNs.png" alt="OpsLink Hosting Logo" class="logo">
+  <div class="logo-wrapper">
+    <img src="https://i.imgur.com/hvIt8Pg.png" alt="Santa Hat" class="hat">
+    <img src="https://i.imgur.com/XwLSGNs.png" alt="OpsLink Hosting Logo" class="logo">
+  </div>
+
   <h1>Welcome to OpsLink Hosting</h1>
+  <p>Reliable, automated hosting built for communities, developers, and roleplay networks — optimized for performance and simplicity.</p>
   <button onclick="window.location.href='https://shop.opslinkcad.com'">Continue to Shop</button>
 </div>
 
