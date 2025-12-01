@@ -48,8 +48,8 @@ body {
 }
 
 .logo {
-  width: 140px;
-  max-width: 80vw;
+  width: 230px;
+  max-width: 90vw;
 }
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
@@ -59,17 +59,17 @@ body {
 /* Santa Hat */
 .hat {
   position: absolute;
-  top: -60px;
-  left: 60%;
+  top: -100px;
+  left: 63%;
   transform: rotate(-15deg);
-  width: 90px;
+  width: 150px;
   z-index: 3;
 }
 
 /* Text styling */
 h1 {
-  font-size: 24px;
-  margin: 18px 0 8px;
+  font-size: 26px;
+  margin: 18px 0 10px;
   font-weight: 600;
   color: var(--text);
 }
@@ -77,8 +77,8 @@ h1 {
 p {
   font-size: 15px;
   color: #9da5b5;
-  max-width: 400px;
-  margin: 0 auto 30px;
+  max-width: 460px;
+  margin: 0 auto 35px;
   line-height: 1.5;
 }
 
@@ -88,10 +88,10 @@ button {
   color: var(--btn-text);
   border: none;
   font-size: 17px;
-  padding: 14px 38px;
+  padding: 14px 40px;
   border-radius: 10px;
   cursor: pointer;
-  box-shadow: 0 0 15px rgba(37, 99, 235, 0.3);
+  box-shadow: 0 0 18px rgba(37, 99, 235, 0.35);
   transition: all var(--transition);
   animation: glow 2.5s infinite ease-in-out;
 }
@@ -100,7 +100,7 @@ button:hover {
   transform: translateY(-2px);
 }
 @keyframes glow {
-  0%, 100% { box-shadow: 0 0 15px rgba(78,140,255,0.3); }
+  0%, 100% { box-shadow: 0 0 18px rgba(78,140,255,0.3); }
   50% { box-shadow: 0 0 25px rgba(78,140,255,0.6); }
 }
 
@@ -126,14 +126,14 @@ button:hover {
 <!-- SNOW BACKGROUND -->
 <script>
 function createSnowflakes() {
-  const snowCount = 50;
+  const snowCount = 60;
   for (let i = 0; i < snowCount; i++) {
     const snowflake = document.createElement("div");
     snowflake.classList.add("snowflake");
     snowflake.textContent = "❄";
     snowflake.style.left = Math.random() * 100 + "vw";
-    snowflake.style.animationDuration = (Math.random() * 4 + 3) + "s";
-    snowflake.style.fontSize = (Math.random() * 10 + 10) + "px";
+    snowflake.style.animationDuration = (Math.random() * 5 + 4) + "s";
+    snowflake.style.fontSize = (Math.random() * 12 + 10) + "px";
     snowflake.style.opacity = Math.random();
     document.body.appendChild(snowflake);
   }
@@ -144,7 +144,7 @@ createSnowflakes();
 <!-- MAIN CONTENT -->
 <div class="container">
   <div class="logo-wrapper">
-    <img src="https://i.imgur.com/hvIt8Pg.png" alt="Santa Hat" class="hat">
+    <img src="https://i.imgur.com/VURJsAs.png" alt="Santa Hat" class="hat">
     <img src="https://i.imgur.com/XwLSGNs.png" alt="OpsLink Hosting Logo" class="logo">
   </div>
 
